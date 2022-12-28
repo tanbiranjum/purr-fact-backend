@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pet {
+  id              String            @id @default(uuid())
+  name            String
+  type            Type
+  image           String
+  size            Size
+  description     String
+  status          Status
+  createdAt       DateTime          @default(now())
+  User            User?             @relation(fields: [userId], references: [id])
+  userId          String?
+  adoptionRequest AdoptionRequest[]
+  adoption        Adoption[]
+}
+
+model User {
+  id              String            @id @default(uuid())
+  email           String            @unique
+  name            String
+  pets            Pet[]
+  sizePreferences Size[]
+  typePreferences Type[]
+  agePreferences  PetAge[]
+  adoptionRequest AdoptionRequest[]
+  createdAt       DateTime          @default(now())
+  adoption        Adoption[]
+}
+
+model Adoption {
+  id        String   @id @default(uuid())
+  Pet       Pet      @relation(fields: [petId], references: [id])
+  petId     String
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model AdoptionRequest {
+  id        String   @id @default(uuid())
+  Pet       Pet      @relation(fields: [petId], references: [id])
+  petId     String
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
+  approved  Boolean? @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum Type {
+  DOG
+  CAT
+  BIRD
+  OTHER
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Status {
+  AVAILABLE
+  ADOPTED
+  PENDING
+}
+
+enum PetAge {
+  BABY
+  YOUNG
+  ADULT
+  SENIOR
+}
