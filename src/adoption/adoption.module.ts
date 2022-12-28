@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 import { AdoptionController } from './adoption.controller';
-import { Adoption } from './adoption.service';
+import { AdoptionService } from './adoption.service';
 
 @Module({
   controllers: [AdoptionController],
-  providers: [Adoption]
+  providers: [AdoptionService, PrismaService],
 })
 export class AdoptionModule {}
