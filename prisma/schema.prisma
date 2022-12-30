@@ -58,26 +58,28 @@ model User {
 }
 
 model Adoption {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   status      Status
-  Pet         Pet      @relation(fields: [petId], references: [id])
+  message     String
+  Pet         Pet       @relation(fields: [petId], references: [id])
   petId       String
-  PrevOwner   User     @relation("PrevOwner", fields: [prevOwnerId], references: [id])
+  PrevOwner   User      @relation("PrevOwner", fields: [prevOwnerId], references: [id])
   prevOwnerId String
-  NewOwner    User?    @relation("NewOwner", fields: [newOwnerId], references: [id])
+  NewOwner    User?     @relation("NewOwner", fields: [newOwnerId], references: [id])
   newOwnerId  String?
-  adoptedAt   DateTime
-  createdAt   DateTime @default(now())
+  adoptedAt   DateTime?
+  createdAt   DateTime  @default(now())
 }
 
 model AdoptionRequest {
-  id        String   @id @default(uuid())
-  Pet       Pet      @relation(fields: [petId], references: [id])
+  id        String        @id @default(uuid())
+  Pet       Pet           @relation(fields: [petId], references: [id])
   petId     String
-  User      User     @relation(fields: [userId], references: [id])
+  User      User          @relation(fields: [userId], references: [id])
   userId    String
-  approved  Boolean? @default(false)
-  createdAt DateTime @default(now())
+  status    RequestStatus
+  approved  Boolean?      @default(false)
+  createdAt DateTime      @default(now())
 }
 
 enum Type {
@@ -102,6 +104,12 @@ enum Status {
   AVAILABLE
   ADOPTED
   PENDING
+}
+
+enum RequestStatus {
+  APPROVED
+  PENDING
+  REJECTED
 }
 
 enum PetAge {

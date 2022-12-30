@@ -7,6 +7,10 @@ export class SearchService {
   constructor(private readonly prisma: PrismaService) {}
 
   async searchPets(query: any): Promise<Adoption[]> {
+    const page = query.page || 1;
+    const limit = query.limit || 10;
+    const skip = (page - 1) * limit;
+
     return await this.prisma.adoption.findMany({
       include: {
         Pet: {
@@ -16,23 +20,29 @@ export class SearchService {
         },
       },
       where: {
-        Pet: {
-          name: {
-            contains: query.name,
-          },
-          age: {
-            equals: query.age,
-          },
-          size: {
-            equals: query.size,
-          },
-          Breed: {
-            name: {
-              contains: query.breed,
+        AND: [
+          {
+            Pet: {
+              name: {
+                contains: query.name,
+              },
+              age: {
+                equals: query.age,
+              },
+              size: {
+                equals: query.size,
+              },
+              Breed: {
+                name: {
+                  contains: query.breed,
+                },
+              },
             },
           },
-        },
+        ],
       },
+      skip,
+      take: limit,
     });
   }
 }
