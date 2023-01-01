@@ -49,4 +49,10 @@ export class AdoptionService {
       where,
     });
   }
+
+  async adoptionFromUser(where: Prisma.AdoptionWhereUniqueInput): Promise<AdoptionModel[]> {
+    return this.prisma.adoption.findMany({
+      where,
+    });
+  }
 }

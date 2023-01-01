@@ -9,12 +9,21 @@ type SearchQuery = {
   breed?: string;
 };
 
+interface SearchResponse {
+  count: number;
+  adoptions: Adoption[];
+}
+
 @Controller('search')
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Get('')
-  async searchPets(@Query() query: SearchQuery): Promise<Adoption[]> {
-    return this.searchService.searchPets(query);
+  async searchPets(@Query() query: SearchQuery): Promise<SearchResponse> {
+    try {
+      return await this.searchService.searchPets(query);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

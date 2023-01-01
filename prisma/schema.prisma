@@ -23,7 +23,7 @@ model Pet {
   description     String
   createdAt       DateTime          @default(now())
   User            User              @relation(fields: [userId], references: [id])
-  userId          String            @unique
+  userId          String
   adoptionRequest AdoptionRequest[]
   adoption        Adoption[]
 }
@@ -47,6 +47,8 @@ model User {
   id                String            @id @default(uuid())
   email             String            @unique
   name              String
+  phone             String
+  address           String
   pets              Pet[]
   sizePreferences   Size[]
   typePreferences   Type[]

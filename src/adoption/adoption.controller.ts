@@ -33,4 +33,9 @@ export class AdoptionController {
   async delete(@Param('id') id: string): Promise<Adoption> {
     return this.adoptionService.deleteAdoption({ id });
   }
+
+  @Get('user/:id')
+  async findAllFromUser(@Param('id') id: string): Promise<Adoption[]> {
+    return this.adoptionService.adoptionFromUser({ id });
+  }
 }

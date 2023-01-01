@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 export class SeedService {
   private typePreferences: string[];
@@ -20,6 +20,8 @@ export class SeedService {
         data: {
           name: faker.name.fullName(),
           email: faker.internet.email(),
+          phone: faker.phone.number(),
+          address: faker.address.streetAddress(),
           typePreferences: ['CAT'],
         },
       });
